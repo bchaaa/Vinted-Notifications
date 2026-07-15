@@ -383,8 +383,8 @@ def clear_item_queue(items_queue, new_items_queue):
                     photo_url=item.photo,
                     query_id=query_id,
                     currency=item.currency,
-                    notify_suivitel(item),
                 )
+                notify_suivitel(item)
 
 
 def contains_banwords(title, banwords_str):
