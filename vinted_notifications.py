@@ -250,6 +250,10 @@ if __name__ == "__main__":
         ),
     )
     dispatcher_process.start()
+        # Re-checker de liens morts (compagnon) : lancé avec le bot
+    import subprocess
+    import sys as _sys
+    subprocess.Popen([_sys.executable, "recheck_vinted.py"])
 
     # 4. Set up a scheduler to monitor processes
     # This will check the process status in the database and start/stop processes as needed
