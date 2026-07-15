@@ -250,6 +250,11 @@ if __name__ == "__main__":
         ),
     )
     dispatcher_process.start()
+    # Re-checker de liens morts (compagnon) : surveille les annonces vues
+    # récemment et ping Telegram si l'une est retirée puis remise en ligne.
+    import subprocess
+    import sys as _sys
+    subprocess.Popen([_sys.executable, "recheck_vinted.py"])
         # Re-checker de liens morts (compagnon) : lancé avec le bot
     import subprocess
     import sys as _sys
