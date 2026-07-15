@@ -1,4 +1,5 @@
 import db
+import os
 import requests
 from pyVintedVN import Vinted, requester
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
@@ -302,6 +303,30 @@ def process_items(queue):
         queue.put((data, query[0]))
         logger.info(f"Scraped {len(data)} items for query: {query[1]}")
 
+def notify_suivitel(item):
+    """Envoie l'annonce au webhook Suivi Tel (en plus de Telegram)."""
+    url = os.environ.get("SUIVITEL_WEBHOOK_URL")
+    secret = os.environ.get("SUIVITEL_WEBHOOK_SECRET")
+    if not url or not secret:
+        return
+    try:
+        requests.post(
+            url,
+            json={
+                "id": item.id,
+                "title": item.title,
+                "price": item.price,
+                "currency": item.currency,
+                "brand": item.brand_title,
+                "photo": item.photo,
+                "url": item.url,
+            },
+            headers={"Authorization": f"Bearer {secret}"},
+            timeout=10,
+        )
+    except Exception as e:
+        logger.warning(f"Webhook Suivi Tel KO (non bloquant) : {e}")
+
 
 def clear_item_queue(items_queue, new_items_queue):
     """
@@ -358,6 +383,7 @@ def clear_item_queue(items_queue, new_items_queue):
                     photo_url=item.photo,
                     query_id=query_id,
                     currency=item.currency,
+                    notify_suivitel(item),
                 )
 
 
