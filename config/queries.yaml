@@ -1,0 +1,14 @@
+iphone:
+  categorie: 3661
+  recherches:
+    - nom: iphone 16 pro max
+      prix_min: 150
+      prix_max: 310
+
+ps5:
+  categorie: 3025
+  platform: 1281
+  recherches:
+    - nom: ps5
+      prix_min: 50
+      prix_max: 310

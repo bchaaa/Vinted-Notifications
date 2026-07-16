@@ -297,7 +297,11 @@ def process_items(queue):
 
     # for each keyword we parse data
     for query in all_queries:
-        all_items = vinted.items.search(query[1], nbr_items=items_per_query)
+        try:
+            all_items = vinted.items.search(query[1], nbr_items=items_per_query)
+        except Exception as e:
+            logger.error(f"Error scraping query '{query[1]}': {e}", exc_info=True)
+            continue
         # Filter to only include new items. This should reduce the amount of db calls.
         data = [item for item in all_items if item.is_new_item()]
         queue.put((data, query[0]))

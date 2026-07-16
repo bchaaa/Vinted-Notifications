@@ -38,20 +38,35 @@ class Item:
         except KeyError:
             # If size_title is not available, set it to None
             self.size_title = None
-        self.currency = data["price"]["currency_code"]
-        self.price = data["price"]["amount"]
-        self.photo = data["photo"]["url"]
-        self.url = data["url"]
+        price_data = data.get("price") or {}
+        self.currency = price_data.get("currency_code")
+        self.price = price_data.get("amount")
+        self.url = data.get("url")
         # We keep everything before the "items"
         self.buy_url = (
-            data["url"].split("items")[0]
+            self.url.split("items")[0]
             + "transaction/buy/new?source_screen=item&transaction%5Bitem_id%5D="
             + str(data["id"])
-        )
-        self.created_at_ts = datetime.fromtimestamp(
-            data["photo"]["high_resolution"]["timestamp"], tz=timezone.utc
-        )
-        self.raw_timestamp = data["photo"]["high_resolution"]["timestamp"]
+        ) if self.url else None
+
+        photo_data = data.get("photo")
+        if photo_data:
+            self.photo = photo_data.get("url")
+            high_res = photo_data.get("high_resolution") or {}
+            timestamp = high_res.get("timestamp")
+        else:
+            # An item posted without a photo (or with an upload still in
+            # progress on Vinted's side) has no "photo" key. Treat it as
+            # brand new since there's no real timestamp to fall back on.
+            self.photo = None
+            timestamp = None
+
+        if timestamp is not None:
+            self.created_at_ts = datetime.fromtimestamp(timestamp, tz=timezone.utc)
+            self.raw_timestamp = timestamp
+        else:
+            self.created_at_ts = datetime.now(timezone.utc)
+            self.raw_timestamp = self.created_at_ts.timestamp()
 
     def __eq__(self, other):
         """
