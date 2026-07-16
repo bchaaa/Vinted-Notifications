@@ -10,25 +10,48 @@ iphone:
   categorie: 3661          # ID de catégorie Vinted (catalog[])
   recherches:
     - nom: iphone 16 pro max
+      texte: iphone 16 pro max   # optionnel : search_text (absent = pas de texte)
       prix_min: 150
       prix_max: 310
-    - nom: iphone 15
-      prix_min: 100
-      prix_max: 250
 
 ps5:
   categorie: 3025
   platform: 1281           # optionnel : video_game_platform_ids[]
   recherches:
-    - nom: ps5
+    - nom: PS5 50-310      # pas de `texte` : parcourt juste la catégorie par prix
       prix_min: 50
       prix_max: 310
+
+# Section "filet de sécurité" : pas de `categorie`, cherche sur tout Vinted.
+# Utile pour rattraper les annonces mal classées par le vendeur.
+filets:
+  recherches:
+    - nom: Filet iPhone (toutes catégories)
+      texte: iphone
+      prix_min: 40
+      prix_max: 310
+
+# Optionnel : réglages du bot synchronisés en même temps que les requêtes.
+parametres:
+  items_per_query: 40
+  query_refresh_delay: 15
+  banwords:
+    - portable
+    - coque
+    - chargeur
 ```
 
-Chaque section (`iphone`, `ps5`, ...) a une `categorie` (et éventuellement un
-`platform`), et une liste de `recherches` avec un nom et une fourchette de
-prix. Le nom sert à la fois de `search_text` Vinted et de nom affiché sur la
-page `/queries`.
+Chaque section a une `categorie` optionnelle (absente = pas de filtre de
+catégorie, donc un "filet de sécurité" qui cherche sur tout Vinted) et
+éventuellement un `platform`. Chaque recherche a un `nom` (affiché sur
+`/queries`) et une fourchette de prix ; le `texte` (search_text) est
+optionnel — sans lui, la requête parcourt juste la catégorie/prix, ce qui
+est utile quand la catégorie suffit à cibler (ex. PS5 précis).
+
+La section `parametres` (optionnelle) permet de versionner `items_per_query`,
+`query_refresh_delay` et `banwords` — le script les pousse dans la table
+`parameters` (`banwords` est automatiquement joint avec le séparateur `|||`
+attendu par le bot).
 
 ## Utilisation
 

@@ -1,14 +1,143 @@
+# Source de vérité pour les requêtes Vinted surveillées par le bot.
+# Éditer ce fichier puis lancer `python sync_queries.py` pour appliquer.
+#
+# Chaque section groupe des recherches sous une categorie/platform commune.
+# - `categorie` (optionnel) : ID Vinted catalog[]. Absent = pas de filtre
+#   de catégorie (filet de sécurité, cherche sur tout Vinted).
+# - `platform` (optionnel) : video_game_platform_ids[] (jeux vidéo/consoles).
+# - `recherches[].texte` (optionnel) : texte de recherche (search_text).
+#   Absent = pas de search_text, on parcourt juste la catégorie par prix
+#   (utile pour une catégorie précise où le texte n'apporte rien).
+# - `recherches[].nom` : nom affiché sur /queries (obligatoire).
+
 iphone:
   categorie: 3661
   recherches:
     - nom: iphone 16 pro max
+      texte: iphone 16 pro max
       prix_min: 150
       prix_max: 310
+    - nom: iphone 16 pro
+      texte: iphone 16 pro
+      prix_min: 120
+      prix_max: 290
+    - nom: iphone 16
+      texte: iphone 16
+      prix_min: 100
+      prix_max: 270
+    - nom: iphone 15 pro max
+      texte: iphone 15 pro max
+      prix_min: 110
+      prix_max: 270
+    - nom: iphone 15 pro
+      texte: iphone 15 pro
+      prix_min: 100
+      prix_max: 260
+    - nom: iphone 15
+      texte: iphone 15
+      prix_min: 80
+      prix_max: 210
+    - nom: iphone 14 pro max
+      texte: iphone 14 pro max
+      prix_min: 80
+      prix_max: 180
+    - nom: iphone 14 pro
+      texte: iphone 14 pro
+      prix_min: 70
+      prix_max: 180
+    - nom: iphone 14
+      texte: iphone 14
+      prix_min: 40
+      prix_max: 150
+    - nom: iphone 13 pro max
+      texte: iphone 13 pro max
+      prix_min: 60
+      prix_max: 150
+    - nom: iphone 13 pro
+      texte: iphone 13 pro
+      prix_min: 50
+      prix_max: 120
+    - nom: iphone 13
+      texte: iphone 13
+      prix_min: 40
+      prix_max: 100
 
 ps5:
   categorie: 3025
   platform: 1281
   recherches:
-    - nom: ps5
+    - nom: PS5 50-310
       prix_min: 50
       prix_max: 310
+
+ps5_accessoires:
+  categorie: 3024
+  platform: 1281
+  recherches:
+    - nom: PS5 accessoires 5-40
+      prix_min: 5
+      prix_max: 40
+
+filets:
+  recherches:
+    - nom: Filet iPhone (toutes catégories)
+      texte: iphone
+      prix_min: 40
+      prix_max: 310
+    - nom: Filet PS5 (toutes catégories)
+      texte: ps5
+      prix_min: 50
+      prix_max: 310
+    - nom: Filet Playstation 5 (toutes catégories)
+      texte: playstation 5
+      prix_min: 50
+      prix_max: 310
+
+parametres:
+  items_per_query: 40
+  query_refresh_delay: 15
+  banwords:
+    - portal
+    - portable
+    - manette seule
+    - coque
+    - sticker
+    - skin
+    - autocollant
+    - support
+    - stand
+    - socle
+    - cable
+    - câble
+    - chargeur
+    - ventilateur
+    - poster
+    - steelbook
+    - fifa
+    - ea sports
+    - call of duty
+    - cod
+    - gta
+    - jeux
+    - jeu
+    - blu-ray
+    - dvd
+    - verre trempé
+    - protection écran
+    - film protecteur
+    - powerbank
+    - batterie externe
+    - adaptateur
+    - boite vide
+    - emballage
+    - étui
+    - housse
+    - dock
+    - support voiture
+    - airpods
+    - watch
+    - apple watch
+    - ipad
+    - macbook
+    - imac
+    - airpod
